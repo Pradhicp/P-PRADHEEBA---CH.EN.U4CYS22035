@@ -1,0 +1,30 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const captchaSpan = document.getElementById("captcha");
+    const captchaInput = document.getElementById("captcha-input");
+    const loginForm = document.getElementById("login-form");
+
+    function generateCaptcha() {
+        const num1 = Math.floor(Math.random() * 10);
+        const num2 = Math.floor(Math.random() * 10);
+        const operation = Math.random() < 0.5 ? "+" : "-";
+        const result = operation === "+" ? num1 + num2 : num1 - num2;
+        captchaSpan.textContent = `${num1} ${operation} ${num2} = ?`;
+        return result;
+    }
+
+    loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const answer = parseInt(captchaInput.value, 10);
+        if (answer === generateCaptcha()) {
+            alert("Login successful!");
+        } else {
+            alert("CAPTCHA verification failed. Please try again.");
+            generateCaptcha();
+            captchaInput.value = "";
+        }
+    });
+
+    // Generate CAPTCHA on page load
+    generateCaptcha();
+});
